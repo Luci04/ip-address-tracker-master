@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+  <title>Frontend Mentor | IP Address Tracker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+    integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+    integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="main-container">
+    <div class="upper-container">
+      <div class="header">
+        <h1>IP Address Tracker</h1>
+      </div>
+      <div class="ip-address-container">
+        <input id="ip-input" placeholder="Search for any IP address or domain" class="ip-address-input" type="text" />
+        <div class="btn" id="ip-fetch-button">
+          <img src="./images//icon-arrow.svg" alt="" srcset="">
+        </div>
+      </div>
+      <div class="info-container">
+        <div class="info-item">
+          <div class="info-item-title">
+            IP Address
+          </div>
+          <div class="item-info-main" id="ip-address-value">
+            192.212.174.101
+          </div>
+        </div>
+        <div class="right-border"></div>
+        <div class="info-item">
+          <div class="info-item-title">
+            Location
+          </div>
+          <div class="item-info-main" id="location-value">
+            Brooklyn, NY 10001
+          </div>
+        </div>
+        <div class="right-border"></div>
+        <div class="info-item">
+          <div class="info-item-title">
+            Timezone
+          </div>
+          <div class="item-info-main" id="timezone-value">
+            UTC -05:00
+          </div>
+        </div>
+        <div class="right-border"></div>
+        <div class="info-item">
+          <div class="info-item-title">
+            ISP
+          </div>
+          <div class="item-info-main" id="isp-value">
+            SpaceX Starlink
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="map"></div>
+    <div class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+      Coded by <a href="https://github.com/Luci04">Avinash Shukla</a>.
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+  <!-- add offset value dynamically using the API -->
+
+
+
+  <script>
+
+    const GeoLocationAPi = "https://geo.ipify.org/api/v2/country,city?apiKey=at_cyrLXPpuYCuBlMCBODDIE9zxrMp99&ipAddress=";
+
+    const btn = document.getElementById("ip-fetch-button");
+
+    const ip_address_element = document.getElementById("ip-address-value");
+    const location_element = document.getElementById("location-value");
+    const timezone_element = document.getElementById("timezone-value");
+    const isp_element = document.getElementById("isp-value");
+
+
+    var map = L.map('map', {
+      center: [34.04915, -118.09462],
+      zoom: 15,
+      zoomControl: false
+    });
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const SettingData = (data) => {
+      const { as, ip, isp, location } = data;
+
+      console.log(data);
+
+      ip_address_element.innerHTML = `${ip}`;
+      location_element.innerHTML = `${location.city + ", " + location.country}`;
+      timezone_element.innerHTML = `${location.timezone}`;
+      isp_element.innerHTML = `${isp}`;
+      var latlng = L.latLng(location.lat, location.lng);
+      map.setView(latlng, 15);
+      L.marker([location.lat, location.lng]).addTo(map)
+    }
+
+
+    btn.addEventListener("click", () => {
+      const input_value = document.getElementById("ip-input").value.trim();
+
+      fetch(`${GeoLocationAPi + input_value}`).then((response) => response.json())
+        .then((data) => SettingData(data));
+    })
+
+  </script>
+</body>
+
+</html>
