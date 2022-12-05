@@ -75,7 +75,7 @@
 
 .info-container {
   position: relative;
-  bottom: -100px;
+  bottom: -40px;
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -147,7 +147,7 @@
 
 @media all and (max-width: 768px) {
   .info-container {
-    bottom: -50px;
+    bottom: 25px;
     width: 95%;
     transform: translate(0, 10%);
     -webkit-transform: translate(0, 10%);

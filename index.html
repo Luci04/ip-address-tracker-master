@@ -102,6 +102,7 @@
 
     const btn = document.getElementById("ip-fetch-button");
 
+
     const ip_address_element = document.getElementById("ip-address-value");
     const location_element = document.getElementById("location-value");
     const timezone_element = document.getElementById("timezone-value");
@@ -141,6 +142,15 @@
     })
 
   </script>
+  <script type="application/javascript">
+    function getIP(json) {
+      const ip_input = document.getElementById("ip-input");
+
+      ip_input.value = `${json.ip}`;
+    }
+  </script>
+
+  <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
 </body>
 
 </html>
